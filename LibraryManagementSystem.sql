@@ -190,3 +190,13 @@ inner join Students s on bb.StudentID = s.StudentID
 where bb.BorrowDate >= dateadd(day, -30, getdate())
 group by s.StudentName
 Order by NumberOfBorrow desc;
+
+--SECTION A – Joins, Filters, Logical Queries
+--1. List all books currently borrowed, showing: StudentName, BookName, AuthorName, BorrowDate, DueDate, AccessNo, and CategoryName.
+select s.StudentName, b.BookName, a.AuthorName, bb.BorrowDate, bb.DueDate, bi.AccessNo, c.CategoryName from BorrowedBooks bb
+inner join Students s on bb.StudentID = s.StudentID 
+inner join BookInventory bi on bb.BookInventoryID = bi.BookInventoryID
+inner join Books b on bi.BookID = b.BookID
+inner join Authors a on b.AuthorID = a.AuthorID
+inner join Categories c on b.CategoryID = c.CategoryID
+where bb.ReturnDate is null;
