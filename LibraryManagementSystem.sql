@@ -207,3 +207,10 @@ inner join Students s on bb.StudentID = s.StudentID
 inner join BookInventory bi on bb.BookInventoryID = bi.BookInventoryID
 inner join Books b on bi.BookID = b.BookID
 where bb.ReturnDate is null and datediff(day, bb.DueDate, GETDATE()) > 5;
+
+--3. List the number of books borrowed by department this year (with DepartmentName and TotalBorrowed).
+select d.DepartmentName, Count(*) as TotaBorrowed from BorrowedBooks bb
+inner join Students s on bb.StudentID = s.StudentID
+inner join Departments d on s.DepartmentID = d.DepartmentID
+where year(bb.BorrowDate ) = year(getdate())
+group by d.DepartmentName;
