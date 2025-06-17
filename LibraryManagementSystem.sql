@@ -251,3 +251,34 @@ inner join Books b on bi.BookID = b.BookID
 inner join Categories c on b.CategoryID = c.CategoryID
 group by s.StudentName, c.CategoryName
 having count(b.CategoryID) > 1;
+
+--SECTION C – Views, Functions, Stored Procedures (9–13)
+--9. Create a view vw_OverdueDetails showing: StudentID, BookName, DaysLate, FineAmount (if any), where ReturnDate > DueDate.
+create view vw_OverdueDetails 
+as
+	select bb.StudentID, b.BookName, DATEDIFF(day, bb.DueDate, bb.ReturnDate)as DaysLate, f.Amount from BorrowedBooks bb
+	inner join Fines f on bb.BorrowedBookID = f.BorrowedBookID
+	inner join BookInventory bi on bb.BookInventoryID = bi.BookInventoryID
+	inner join Books b on bi.BookID = b.BookID
+	where bb.ReturnDate > bb.DueDate and bb.ReturnDate is not null
+
+
+select * from vw_OverdueDetails;
+
+
+--10. Create a scalar function fn_GetTotalFineByStudent(@StudentID) returning total paid fine for a student.
+create function fn_GetTotalFineByStudent(
+	@StudentID int
+)
+returns decimal(10,2)
+as
+begin
+	declare @TotalAmount decimal (10,2)
+	select @TotalAmount = sum(f.Amount) from Fines f
+	inner join BorrowedBooks bb on f.BorrowedBookID = bb.BorrowedBookID
+	where bb.StudentID = @StudentID
+
+	return isnull(@TotalAmount,0)
+end
+
+select dbo.fn_GetTotalFineByStudent(101);
