@@ -214,3 +214,10 @@ inner join Students s on bb.StudentID = s.StudentID
 inner join Departments d on s.DepartmentID = d.DepartmentID
 where year(bb.BorrowDate ) = year(getdate())
 group by d.DepartmentName;
+
+--4. Show the student who has paid the highest total fines.
+select top 1 s.StudentName, Sum(f.Amount) as Amount from Fines f
+inner join BorrowedBooks bb on f.BorrowedBookID = bb.BorrowedBookID
+inner join Students s on bb.StudentID = s.StudentID
+group by s.StudentName
+order by Amount desc ;
