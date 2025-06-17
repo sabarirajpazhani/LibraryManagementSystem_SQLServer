@@ -183,3 +183,10 @@ select a.AuthorName , Count(b.AuthorID) as NumberOfBooks from Books b
 inner join Authors a on b.AuthorID = a.AuthorID
 group by a.AuthorName
 having count(b.AuthorID) > 1;
+
+--4. List the top 3 students who borrowed the most books in the last 30 days.
+select top 3 s.StudentName , count(bb.StudentID) as NumberOfBorrow from BorrowedBooks bb
+inner join Students s on bb.StudentID = s.StudentID
+where bb.BorrowDate >= dateadd(day, -30, getdate())
+group by s.StudentName
+Order by NumberOfBorrow desc;
