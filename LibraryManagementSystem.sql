@@ -242,3 +242,12 @@ group by p.PaymentMethodName;
 select s.StudentName from BorrowedBooks bb
 inner join Students s on bb.StudentID = s.StudentID
 where DATEDIFF(day, bb.DueDate, getdate()) >= 10 and bb.ReturnDate is null;
+
+--8. Display all students who borrowed books from more than one category.
+select s.StudentName , c.CategoryName, count(b.CategoryID) as Counts from BorrowedBooks bb
+inner join Students s on bb.StudentID = s.StudentID
+inner join BookInventory bi on bb.BookInventoryID = bi.BookInventoryID
+inner join Books b on bi.BookID = b.BookID
+inner join Categories c on b.CategoryID = c.CategoryID
+group by s.StudentName, c.CategoryName
+having count(b.CategoryID) > 1;
