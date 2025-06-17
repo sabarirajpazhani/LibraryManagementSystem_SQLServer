@@ -237,3 +237,8 @@ inner join FinePayment pay on f.FineID = pay.FineID
 inner join PaymentMethods p on pay.PaymentMethodID = p.PaymentMethodID
 where year(FineDate) = year(getdate())
 group by p.PaymentMethodName;
+
+--7. Find students who returned books after more than 10 days from due date.
+select s.StudentName from BorrowedBooks bb
+inner join Students s on bb.StudentID = s.StudentID
+where DATEDIFF(day, bb.DueDate, getdate()) >= 10 and bb.ReturnDate is null;
