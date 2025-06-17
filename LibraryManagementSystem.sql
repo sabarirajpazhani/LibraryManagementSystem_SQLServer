@@ -168,3 +168,10 @@ inner join Books b on bi.BookID = b.BookID
 inner join Authors a on b.AuthorID = a.AuthorID 
 where br.ReturnDate is not null ;
 
+--2.Display books issued by student "Arun Kumar" that are already overdue (due date before today).
+select b.BookName, bb.DueDate from BorrowedBooks bb
+inner join BookInventory bi on bb.BookInventoryID = bi.BookInventoryID
+inner join Books b on bi.BookID = b.BookID
+inner join Students s on bb.StudentID = s.StudentID
+where s.StudentName = 'Arun Kumar' and bb.DueDate < getdate() and bb.ReturnDate is null;
+
