@@ -175,3 +175,11 @@ inner join Books b on bi.BookID = b.BookID
 inner join Students s on bb.StudentID = s.StudentID
 where s.StudentName = 'Arun Kumar' and bb.DueDate < getdate() and bb.ReturnDate is null;
 
+--3. Show Author who wrote more than one Books.
+insert into Books values
+(204, 'Code Rules the World', 1, 3, '2nd');
+
+select a.AuthorName , Count(b.AuthorID) as NumberOfBooks from Books b
+inner join Authors a on b.AuthorID = a.AuthorID
+group by a.AuthorName
+having count(b.AuthorID) > 1;
