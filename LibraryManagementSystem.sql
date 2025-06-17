@@ -200,3 +200,10 @@ inner join Books b on bi.BookID = b.BookID
 inner join Authors a on b.AuthorID = a.AuthorID
 inner join Categories c on b.CategoryID = c.CategoryID
 where bb.ReturnDate is null;
+
+--2. Display books overdue by more than 5 days with StudentName, DaysOverdue, BookName.
+select s.StudentName, datediff(day, bb.DueDate, GETDATE()) , b.BookName from BorrowedBooks bb
+inner join Students s on bb.StudentID = s.StudentID 
+inner join BookInventory bi on bb.BookInventoryID = bi.BookInventoryID
+inner join Books b on bi.BookID = b.BookID
+where bb.ReturnDate is null and datediff(day, bb.DueDate, GETDATE()) > 5;
