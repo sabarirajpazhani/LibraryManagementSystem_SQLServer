@@ -159,5 +159,12 @@ SELECT * FROM PaymentMethods;
 SELECT * FROM PayStatus;
 SELECT * FROM FinePayment;
 
---
+--Joins & Multi-Level Filters
+--1. List StudentName, BookTitle, AuthorName, IssueDate, DueDate for all currently issued books (not returned).
+select s.StudentName, b.BookName, a.AuthorName, br.BorrowDate, br.DueDate from BorrowedBooks br
+inner join Students s on br.StudentID = s.StudentID
+inner join BookInventory bi on br.BookInventoryID = bi.BookInventoryID
+inner join Books b on bi.BookID = b.BookID
+inner join Authors a on b.AuthorID = a.AuthorID 
+where br.ReturnDate is not null ;
 
