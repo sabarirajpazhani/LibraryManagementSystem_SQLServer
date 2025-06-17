@@ -221,3 +221,10 @@ inner join BorrowedBooks bb on f.BorrowedBookID = bb.BorrowedBookID
 inner join Students s on bb.StudentID = s.StudentID
 group by s.StudentName
 order by Amount desc ;
+
+--5. List books that have been borrowed more than 3 times overall.
+select b.BookName , count(bb.BookInventoryID) as NumberOfBorrow from BorrowedBooks bb
+inner join BookInventory bi on bb.BookInventoryID = bi.BookInventoryID
+inner join Books b on bi.BookID = b.BookID
+group by b.BookName 
+having count(bb.BookInventoryID) > 3;
